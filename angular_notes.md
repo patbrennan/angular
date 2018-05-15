@@ -255,4 +255,44 @@ onCreateServer() { // "on" is convention for reacting to an event
 
 For plenty of examples using **directives**, see the included project herein.
 
+### Course Practice Application:
+
+**Planning**:
+
+Shopping List & Recipe App. First you should start by planning what components you think you'll need. All angular apps have a root component that holds all other components.
+
+### Models in Angular
+
+In the main `recipes` folder, you might have a file `recipe.model.ts`:
+
+```javascript
+export class Recipe {
+  public name: string;
+  public description: string;
+  public imagePath: string;
+
+  constructor(name: string, desc: string, imgPath: string) {
+    this.name = name;
+    this.description = desc;
+    this.imagePath = imgPath;
+  }
+}
+
+// shortcut way with Ts
+export class Ingredient {
+  // shortcut to declaring properties & their types. Will auto create & assign them.
+  constructor(public name: string, public amount: number) {
+  }
+}
+```
+
+### Angular Error Messages
+
+Debugging is supported by the console in the browser by going to the "sources" tab...you can place breakpoints in the `main.bundle.js` file & when you do that, the source `file.ts` comes up. This is because the CLI places sourcemaps in our code that allow it to be translated & run in the browser as plain Js.
+
+Finding the correct place in a large compiled `main.bundle.js` file can be quite cumbersome, but you can directly access Ts files under `webpack/./src/app/` to do the same thing.
+
+You could also use **augury** as a chrome extension to help debug Angular apps. Just google it, add the extension to chrome, and choose it from the top tabs in chrome dev tools. Check out [the website](https://augury.angular.io/) for more info
+
+## Dive Deeper: Components & Data Binding
 
