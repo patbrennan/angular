@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+  <!--<div class="panel-heading" #heading>{{ element.name }}</div>-->
+  <div class="panel-heading" #heading>{{ name }}</div>
+  <div class="panel-body">
+    <!--marks place for Angular where it should add any content it finds-->
+    <!--in the parent template, right here-->
+    <ng-content></ng-content>
+    
+    <!--this was replaced by putting it in the parent template:-->
+    <!--
+    <p>
+      <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
+      <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
+    </p>
+    -->
+  </div>
+</div>

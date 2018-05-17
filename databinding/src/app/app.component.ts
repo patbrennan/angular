@@ -6,23 +6,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  serverElements = [];
-  newServerName = '';
-  newServerContent = '';
-
-  onAddServer() {
+  serverElements = [{name: "Test Server", type: "server", content: "Just a test"}];
+  
+  // these are essentially event handlers - what to do when events from children
+  // are triggered
+  onServerAdded(serverData: {name: string, content: string}) {
     this.serverElements.push({
       type: 'server',
-      name: this.newServerName,
-      content: this.newServerContent
+      name: serverData.name,
+      content: serverData.content
     });
   }
 
-  onAddBlueprint() {
+  onBlueprintAdded(blueprintData: {name: string, content: string}) {
     this.serverElements.push({
       type: 'blueprint',
-      name: this.newServerName,
-      content: this.newServerContent
+      name: blueprintData.name,
+      content: blueprintData.content
     });
+  }
+  
+  onChangeFirst() {
+    this.serverElements[0].name = "Changed";
   }
 }

@@ -296,3 +296,176 @@ You could also use **augury** as a chrome extension to help debug Angular apps. 
 
 ## Dive Deeper: Components & Data Binding
 
+### Custom property binding:
+
+We can emit our own events through custom property binding! By default, all properties on a component are only accessible *inside* the component. You have to be explicit as to which properties you wish to expose to the "outside".
+
+> NOTE: Passing data with property binding / @Input() works only directly from a parent to a child component. Use custom event binding (below) to go from child to parent.
+
+To do this, you must add a decorator to the property & import that functionality in the Ts file:
+
+```html
+<!-- app.component.html - "the parent" -->
+<div class="container">
+  <app-cockpit></app-cockpit>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12">
+      <app-server-element 
+        *ngFor="let server of serverElements"
+        [element]="server">
+      </app-server-element>
+    </div>
+  </div>
+</div>
+
+<!--server-element.component.html-->
+<div class="panel panel-default">
+  <div class="panel-heading">{{ element.name }}</div>
+  <div class="panel-body">
+    <p>
+      <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
+      <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
+    </p>
+  </div>
+</div>
+```
+
+```javascript
+// app.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  serverElements = [{name: "Test Server", type: "server", content: "Just a test"}];
+}
+
+// server-element.component.ts
+// notice we import "Input" so we can use as a decorator on a property
+import { Component, OnInit, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-server-element',
+  templateUrl: './server-element.component.html',
+  styleUrls: ['./server-element.component.css']
+})
+export class ServerElementComponent implements OnInit {
+// property has a decorator so it can be exposed to the outside.
+  @Input() element: {type: string, name: string, content: string};
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+```
+
+Another explanation:
+
+```html
+<!--parent.component.html-->
+<p>parent works!</p>
+<app-child [messageReceivedByChild]="messageSuppliedByParent"></app-child>
+
+<!--child.component.html-->
+<p>
+child works! {{messageReceivedByChild}}
+</p>
+```
+
+```javascript
+// parent.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+selector: 'app-parent',
+templateUrl: './parent.component.html'
+
+})
+
+export class ParentComponent implements OnInit {
+constructor() {}
+ngOnInit() {}
+
+messageSuppliedByParent: string = "I figured it out"
+
+}
+
+// child.component.ts
+
+import { Component, OnInit, Input } from '@angular/core';
+
+@Component({
+selector: 'app-child',
+templateUrl: './child.component.html'
+})
+
+export class ChildComponent implements OnInit {
+@Input() messageReceivedByChild: string;
+constructor() {}
+ngOnInit() {}
+}
+```
+
+See this [simple app for more/better examples](https://stackblitz.com/edit/wr-angular-custom-property-binding?file=app%2Factor.component.ts)
+
+**Alias Properties**:
+
+```javascript
+// server-element.ts
+// "srvr" is the alias to use in .html files; must use it to work.
+  @Input("srvr") element: {type: string, name: string, content: string};
+```
+
+### Custom Event binding:
+
+Here (in our `databinding` application), we want to be able to tell the parent object that something happened & see changes reflected. Ex: we created a server in a child component, and want to reflect that in a sibling component that is also inside the same parent.
+
+To see this in action, look at the following files in the `databinding` folder:
+
+- `databinding/src/app/cockpit/cockpit.html`
+- `databinding/src/app/cockpit/cockpit.ts`
+- `databinding/src/app/app.html`
+- `databinding/src/app/app.ts`
+
+**SUMMARY**:
+
+Using *custom property binding*, you can pass data from a **parent** component to a **child** component, and with *custom event binding*, you can pass data from a **child** to a **parent** - which could then be passed to other children of that parent.
+
+In this way, Angular controls who is modifying data. Further down, more flexible data binding between components will be explored. They are called *services*.
+
+### Understanding view encapsulation
+
+The behavior of CSS in angular files (i.e. `app.component.css`) is such that those CSS styles will only apply to elements directly in that template - not children or parents. This way we know that when we define styles in these files, they ONLY get applied to that component. Angular does this by putting unique attributes on all html elements within a component so it knows to style those with specific rules.
+
+This means that we will have to be careful about extracting the proper CSS when we split components.
+
+If you wanted to override this behavior:
+
+```javascript
+// server-element.ts
+import { Component, OnInit, Input, ViewEncapsulation } from "@angular/core";
+
+@Component({
+  selector: 'app-server-element',
+  templateUrl: './server-element.component.html',
+  styleUrls: ['./server-element.component.css'],
+  // Can use .None (use styles application-wide), .Native (uses shadow DOM - only
+  // browsers that support this)
+  // or Emulated (default)
+  encapsulation: ViewEncapsulation.None
+})
+```
+
+### References in Templates
+
+Note that you can create local references in your templates for use elsewhere - and they can be created on any element. However, you can't use them in Ts files - only the template files. This can be done by adding `#yourName` & then referencing `yourName` later.
+
+
+
