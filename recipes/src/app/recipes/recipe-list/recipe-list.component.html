@@ -6,18 +6,11 @@
 <hr>
 <div class="row">
   <div class="col-xs-12">
-    <a href="#" class="list-group-item clearfix" *ngFor="let recipe of recipes">
-      <div class="pull-left">
-        <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
-        <p class="list-group-item-text">{{ recipe.description}}</p>
-      </div>
-      <span class="pull-right">
-        <img src="{{recipe.imagePath}}"
-             alt=""
-             class="img-responsive"
-             style="max-height: 50px;">
-      </span>
-    </a>
-    <app-recipe-item></app-recipe-item>
+    <!--note that when single recipe item selected, we still emit another event "up"-->
+    <!--the chain to the next parent so it has access to the data-->
+    <app-recipe-item *ngFor="let recipeItem of recipes" 
+                     [recipe]="recipeItem"
+                     (recipeSelect)="onRecipeSelect(recipeItem)">
+    </app-recipe-item>
   </div>
 </div>

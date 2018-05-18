@@ -467,5 +467,20 @@ import { Component, OnInit, Input, ViewEncapsulation } from "@angular/core";
 
 Note that you can create local references in your templates for use elsewhere - and they can be created on any element. However, you can't use them in Ts files - only the template files. This can be done by adding `#yourName` & then referencing `yourName` later.
 
+### More on Directives + Custom Directives
+
+**Attribute** Directive: changes html attributes. Doesn't modify DOM. (possibly with event or data binding)
+**Structural** Directives: changes the DOM (add or delete elements). (look like attribute w/leading *)
+
+> NOTE: You can't have more than one structural directive on the same element.
+
+**Creating a basic attribute directive**: see "./directives/src/app/basic-highlight" folder for example. When creating these manually, you must remember to register them in `app.module.ts` under both declarations & the imports.
+
+> NOTE: It's not really a good practice to directly access elements, however. Angular can render templates w/out a DOM. Angular isn't limited to the browser - there might be environments where may not have access to DOM. If you try to change DOM then, you might get error. Ergo it's better to use the "renderer" to build attribute directives.
+
+Learn more about Renderer2 methods [here](https://angular.io/api/core/Renderer2)
+
+Use `ng g d directive-name` on the CLI to generate a directive
+
 
 
