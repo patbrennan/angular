@@ -482,5 +482,26 @@ Learn more about Renderer2 methods [here](https://angular.io/api/core/Renderer2)
 
 Use `ng g d directive-name` on the CLI to generate a directive
 
+## Services & Dependency Injection
+
+**Services**: This is a class in Angular that allows you to centralize your code to keep it DRY. It generally contains more business logic or application functionality, whereas components just enable the user experience. They can also be helpful in communication between components.
+
+**providing a service** = tell Ang how to create the service, or instance
+
+> NOTE: Using hierarchical injectors is the correct way to use these, so all children of the parent component will receive an instance of the service. The highest level to provide a service is in the `app.module.ts` - it will then be available application-wide.
+
+Because of the hierarchical nature of services, Angular will overwrite instances of a Service class in child components if you provide it in them. You may want this, but you may not. In order to use the service, you must still import it & keep the instantiation in the constructor function of the component, but you need to remove it from the `providers` array in the component decorator.
+
+To inject a service into another service, you MUST provide it in the `app.module.ts` file - it's not possible by just specifiying it in a component. To see the rest of the code examples, see the "services" folder & associated files.
+
+
+
+
+
+
+
+
+
+
 
 

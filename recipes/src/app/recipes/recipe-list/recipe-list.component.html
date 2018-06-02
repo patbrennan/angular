@@ -9,8 +9,7 @@
     <!--note that when single recipe item selected, we still emit another event "up"-->
     <!--the chain to the next parent so it has access to the data-->
     <app-recipe-item *ngFor="let recipeItem of recipes" 
-                     [recipe]="recipeItem"
-                     (recipeSelect)="onRecipeSelect(recipeItem)">
+                     [recipe]="recipeItem">
     </app-recipe-item>
   </div>
 </div>
