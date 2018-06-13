@@ -494,11 +494,19 @@ Because of the hierarchical nature of services, Angular will overwrite instances
 
 To inject a service into another service, you MUST provide it in the `app.module.ts` file - it's not possible by just specifiying it in a component. To see the rest of the code examples, see the "services" folder & associated files.
 
+## Routing
 
+Routing allows us to have different paths to different places in our app. Essentially the functionality renders the URL, but we tell Angular where & what component to render.
 
+- Edit the `app.module.ts` file 
+  - import all necessary files (see `routing` project folder)
+  - add the routes array w/correct parameters
+  - import it in the @NgModule decorator
+  - Edit the app.html file w/`<routing-outlet>` to tell Ng where to render the component.
 
+When working w/paths in the html files, you can specify relative paths using "../" or "./", as in `routerLink="../servers"`.
 
-
+> NOTE on observables: Angular "cleans up" your app w/observables in the background after a component is destroyed & a subscription is no longer needed, for example. Normally you would have to do this manually. Details on this can be seen in the `routing` project files.
 
 
 
