@@ -36,6 +36,10 @@ export class RecipeService {
     // returns new array that is exact copy - won't modify original array
     return this.recipes.slice();
   }
+  
+  findRecipe(idx: number): Recipe {
+    return this.recipes[idx];
+  }
 
   constructor() { }
 }

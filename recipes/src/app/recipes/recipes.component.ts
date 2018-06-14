@@ -17,7 +17,9 @@ export class RecipesComponent implements OnInit {
     // subscribe to be informed about any recipe selection changes
     // recipeSelected is an event emitter in recipe service:
     this.recipeService.recipeSelected.subscribe(
-      (recipe: Recipe) => this.activeRecipe = recipe;
+      (recipe: Recipe) => { 
+        this.activeRecipe = recipe; 
+      }
     );
   }
 }

@@ -508,8 +508,32 @@ When working w/paths in the html files, you can specify relative paths using "..
 
 > NOTE on observables: Angular "cleans up" your app w/observables in the background after a component is destroyed & a subscription is no longer needed, for example. Normally you would have to do this manually. Details on this can be seen in the `routing` project files.
 
+**Redirection Path Matching Note**:
 
+In our example, we didn't encounter any issues when we tried to redirect the user. But that's not always the case when adding redirections.
 
+By default, Angular matches paths by prefix. That means, that the following route will match both `/recipes`  and just `/`
 
+`{ path: '', redirectTo: '/somewhere-else' }` 
+
+Actually, Angular will give you an error here, because that's a common gotcha: This route will now ALWAYS redirect you! Why?
+
+Since the default matching strategy is "prefix" , Angular checks if the path you entered in the URL does start with the path specified in the route. Of course every path starts with ''  (Important: That's no whitespace, it's simply "nothing").
+
+To fix this behavior, you need to change the matching strategy to "full" :
+
+`{ path: '', redirectTo: '/somewhere-else', pathMatch: 'full' }` 
+
+Now, you only get redirected, if the full path is ''  (so only if you got NO other content in your path in this example).
+
+---
+
+**Understanding Location Strategies**
+
+The server hosting your actual production application has to be configured such that a 404 error returns `index.html`. This is because all URLs are parsed by the server hosting your app first, and won't properly render the page you want unless Angular takes over routing.
+
+For syntax details on dealing w/when this doesn't work & supporting very old browsers, see the `app-routing.module.ts` file in the `routing` project folder.
+
+> NOTE: When you use observables that you create (not built-in angular observables), you must do the "clean up" work yourself. More info on this in the observables section.
 
 

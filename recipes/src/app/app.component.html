@@ -1,11 +1,13 @@
 <!--get access to any data, even custom, that an event passes to us, with $event-->
-<app-header (navClick)="onNavClicked($event)"></app-header>
+<!--<app-header (navClick)="onNavClicked($event)"></app-header>-->
+<app-header></app-header>
 
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <app-recipes *ngIf="activeNav === 'recipes'"></app-recipes>
-      <app-shopping-list *ngIf="activeNav === 'shopping'"></app-shopping-list>
+      <router-outlet></router-outlet>
+      <!--<app-recipes *ngIf="activeNav === 'recipes'"></app-recipes>-->
+      <!--<app-shopping-list *ngIf="activeNav === 'shopping'"></app-shopping-list>-->
     </div>
   </div>
 </div>
