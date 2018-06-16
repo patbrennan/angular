@@ -536,4 +536,65 @@ For syntax details on dealing w/when this doesn't work & supporting very old bro
 
 > NOTE: When you use observables that you create (not built-in angular observables), you must do the "clean up" work yourself. More info on this in the observables section.
 
+## Observables
+
+Definition: Essentially a data source (user input) events, https requests, triggered in code...it's a generalized mechanism for push-based notifications, also known as "observer design pattern". The observable object sends notifications (provider). The observer is the class that receives them.
+
+The observer can react to different data package "hooks":
+- Handle Data
+- Handle Error
+- Handle Completion
+
+You write the code that is executed based on each of these types of data packages.
+
+> NOTE: You may create a memory leak if you create an observable but don't destroy it when necessary. Even though a component may be destroyed, the subscription / observable still persists. You must make sure you unsubscribe when you leave the area that handles the observable.
+
+> TIP: Consider using a **Subject** instead of Ng event emitter. It can easily do cross-component communication. You can find more on Subjects in RxJs documentation.
+
+
+What are operators? They allow you to transform the data you receive into something else, and still stay in the Observable world.
+
+**RxJs 6.0+ syntax**:
+
+```javascript
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { Observable, Observer, Subscription, interval } from "rxjs";
+// import "rxjs/Rx"; = pre-6.0 import for operators
+import { map } from "rxjs/operators";
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit, OnDestroy {
+  // store subscriptions here so they can be destroyed, preventing memory leaks
+  numbersSubscription: Subscription;
+  customObsSubscription: Subscription;
+  
+  constructor() { }
+
+  ngOnInit() {
+    // our own custom observable: emit numbers at a fixed interval
+    const myNumbers = interval(1000)
+    // > 6.0 rxjs means you have to pass operators into pipe
+      .pipe(map( // maps data you get into new Obs w/any transformation of choice
+        (data: number) => {
+          return data * 2;
+        }
+      ));
+    
+    this.numbersSubscription = myNumbers.subscribe(
+      (number: number) => {
+        console.log(number);
+      }
+    );
+```
+
+## Forms in Ng
+
+**Template-Driven** Approach: Ng infers the form object from the DOM.
+
+**Reactive** Approach: Form is created programmatically & synchronized w/the DOM.
 

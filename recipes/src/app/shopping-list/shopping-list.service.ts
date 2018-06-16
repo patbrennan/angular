@@ -1,6 +1,8 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Ingredient } from "../shared/ingredient.model";
+
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +13,16 @@ export class ShoppingListService {
     new Ingredient("Bitters", 3)
   ];
   
-  ingredientAdded = new EventEmitter<Ingredient>();
-  
-  constructor() { }
+  ingredientsChanged = new Subject<Ingredient[]>();
   
   add(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
+    this.ingredientsChanged.next( this.ingredients.slice() );
+  }
+  
+  addIngredients(ingredients: Ingredient[]) {
+    this.ingredients.push(...ingredients);
+    this.ingredientsChanged.next( this.ingredients.slice() );
   }
   
   // TODO?: Add accessor method w/slice to preserve original ingredients array
