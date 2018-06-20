@@ -598,3 +598,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 **Reactive** Approach: Form is created programmatically & synchronized w/the DOM.
 
+## Pipes
+
+**Pipes**: Allows you to transform output in your template. They will be as assigned & created in the Ts code, but once rendered it will look differently using a pipe.
+
+> **NOTE**: If you change a pipe (like the custom filter pipe in the project files, for example) to update every time there is a data change, you have to re-run that pipe, which may cause big performance issues for your app. By default, Angular doesn't do this for this reason. Be aware of this when forcing them to update whenever an array/object is changed or updated.
+
+
+
