@@ -604,5 +604,63 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 > **NOTE**: If you change a pipe (like the custom filter pipe in the project files, for example) to update every time there is a data change, you have to re-run that pipe, which may cause big performance issues for your app. By default, Angular doesn't do this for this reason. Be aware of this when forcing them to update whenever an array/object is changed or updated.
 
+## HTTP:
 
+**Note on differences w/Ng6+:
+
+Don't forget - if you're using Angular (and therefore also RxJS 6+) and you're NOT using rxjs-compat  (npm install --save rxjs-compat  - you may ignore this lecture then, use the code as shown in the videos!), you have to use operators like map()  differently:
+
+Instead of
+
+`....map(...)` 
+
+use
+
+`....pipe(map(...)) `
+
+map also needs to be imported:
+
+Instead of 
+
+`import 'rxjs/Rx';`
+
+use
+
+`import { map } from 'rxjs/operators';`
+
+
+When doing any type of data transformation, it is best to centralize this in the file (service file in our example files) responsible for making http requests, so as to be DRY.
+
+
+Using Ng6, you then have to use the `catch()` operator you'll see in the next lecture a bit differently.
+
+Instead of
+
+```javascript
+....catch(error => {
+    return Observable.throw(...)
+}) 
+```
+
+use
+
+```javascript
+....pipe(catchError(error => {
+    return throwError(...)
+}))
+```
+
+And make sure to import it:
+
+Instead of 
+
+`import 'rxjs/Rx';` and `import { Observable } from 'rxjs/Observable';`
+
+use:
+
+`import { catchError } from 'rxjs/operators';`
+
+and
+
+`import { throwError } from 'rxjs';`
 

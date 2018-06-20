@@ -1,5 +1,5 @@
+// https://ng-recipe-book-f46cb.firebaseio.com/
 import { Injectable } from '@angular/core';
-
 import { Subject } from "rxjs";
 
 import { Recipe } from "./recipe.model";
@@ -34,6 +34,14 @@ export class RecipeService {
       ]
     )
   ];
+  
+  constructor() {
+  }
+  
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
   
   getRecipes() {
     // returns new array that is exact copy - won't modify original array
