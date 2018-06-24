@@ -664,3 +664,96 @@ and
 
 `import { throwError } from 'rxjs';`
 
+## Authentication w/SPA
+
+In an SPA, the front-end code handles all the rendering of the html, unlike a traditional client-server "full-stack" web app. The SPA still sends Auth Information, but doesn't create a session. Still, the server sends back a token (typically a JSON web token) which encodes some information about the user & is hashed w/a secret only known by the server. This token is used to authenticate on future requests.
+
+For using firebase as an authentication service with Ng, run:
+
+`npm install --save firebase`
+
+This will install some Ts files for use w/the project.
+
+---
+
+**NOTE**: Follow this guide for preventing your creds from entering a git repo:
+
+If you are using Git and you pushed your repo to GitHub or a similar site, you have inadvertently exposed your API key to the public. To avoid this, you should use environment files.
+
+Angular CLI should have created a /src/environments file for you. This is a great place to store this information.
+
+
+
+1 - Create `src/environments/environment.example.ts`
+
+in this file, create your contract of what environment variables your app will be expecting. These should be variables that will change depending on whether your app is in dev/staging or production.
+
+My example file:
+
+```javascript
+export const environment = {
+    production: false,
+    firebaseApiKey: '',
+    firebaseAuthDomain: '',
+  };
+```
+
+2 - Edit your /.gitignore 
+
+You will want to remove all your environment files from your Version Control *except* you want your contract included as a reminder of what variables you need to set.
+
+Edit your `/.gitignore`  file and add the following lines:
+
+```
+# Angular Environment
+/src/environments/*
+!/src/environments/environment.example.ts
+```
+
+This will ignore all the files in that folder, except for your example file.
+
+
+2.1 - Removed tracked files from Git for FUTURE commits
+
+So, we added this to .gitignore, but we've already committed your environment files. So we need to tell git to remove them. Open your terminal and in your project root, run the following command:
+
+`git rm --cached -r src/environments`
+
+
+3 - Edit and populate your `/src/environments/environment.ts`  file.
+
+Similar to the example, except actually include your real API key, etc.
+
+
+4. Edit your `app.component.ts file` to pull in this data
+
+```javascript
+// ...
+ 
+// Add this import to get your env variables
+// Angular will pull in the correct script @ build time
+ 
+import { environment } from '../environments/environment';
+ 
+// ...
+// Use your env variables to initialize your firebase connection
+ 
+  ngOnInit() {
+    firebase.initializeApp({
+      apiKey: environment.firebaseApiKey,
+      authDomain: environment.firebaseAuthDomain,
+    });
+ 
+// ...
+```
+
+Now, if you were like me, and you already pushed your changes to GitHub, you will want to undo that, but if it was several commits ago, that will be a pain.
+
+If that is too much pain, I bet you can use firebase to revoke the old API key and issue a new one if that is easier.
+
+> NOTE: sSee [this link](https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public) and [this link](https://stackoverflow.com/questions/35418143/how-to-restrict-firebase-data-modification) in relation to firebase security & properly securing it. There are also checklists in getting started w/Firebase, as well as [this article](https://javebratt.com/hide-firebase-api/) which details more about how to secure it.
+
+When you call the `signin` method using the Firebase SDK, they automatically store the auth token (otherwise you'd have to manually store it).
+
+## Modules & App Optimization
+
