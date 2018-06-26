@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 
-import { Ingredient } from "../shared/ingredient.model";
+import { Ingredient } from '../shared/ingredient.model';
 
-import { ShoppingListService } from "./shopping-list.service";
+import { ShoppingListService } from './shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -25,11 +25,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-  
+
   editItem(idx: number) {
     // uses Subject so it can emit data & be listened to anywhere in the app
     this.listService.startedEditing.next(idx);

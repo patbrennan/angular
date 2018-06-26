@@ -757,3 +757,16 @@ When you call the `signin` method using the Firebase SDK, they automatically sto
 
 ## Modules & App Optimization
 
+In general, all the components, directives, and other files that make up your app are registered in a module. Modularity of your app makes it easier to *not* include modules you don't need, making the files smaller & the app more performant. It also makes it more maintainable. Modules usually bundle certain types of functionality together.
+
+NOTE that the `imports` in the .ts files are simply a Ts feature; not Angular. These are required for Ts to know where the proper code packages live.
+
+A typical custom module you might add may be a feature module. This may be done to increase performance & make the code reusable by putting common functionality or a portion of your interface into its own module.
+
+> NOTE: You must NOT duplicate declarations between modules!
+
+> NOTE: If you create a feature module, you must also move the routes.
+
+In the case where there is shared functionality between two modules, you can extract this & put the functionality into a shared module. It isn't necessarily a feature module. For examples, see the `recipes` project `dropDownDirective` example. Typically there is only one shared module in an app, but you could further extract shared functionalities into their own modules.
+
+
