@@ -9,7 +9,8 @@ import { RecipesComponent } from './recipes.component';
 import { AuthGuard } from '../auth/auth-guard.service';
 
 const recipesRoutes: Routes = [
-  { path: 'recipes', component: RecipesComponent,
+  // first one not path: 'recipes'; already defined in app-routing for lazy loading
+  { path: '', component: RecipesComponent,
     children: [
       { path: '', component: RecipeStartComponent },
       // must come above :id
