@@ -769,4 +769,69 @@ A typical custom module you might add may be a feature module. This may be done 
 
 In the case where there is shared functionality between two modules, you can extract this & put the functionality into a shared module. It isn't necessarily a feature module. For examples, see the `recipes` project `dropDownDirective` example. Typically there is only one shared module in an app, but you could further extract shared functionalities into their own modules.
 
+### Lazy Loading (modules & routing)
+
+When a larger Angular app is first loaded, normally all modules & components, etc are loaded - even though they may never be visited or used. Therefore we can use **Lazy Loading** to improve the performance of our app by only loading modules / routes when they are needed & visited.
+
+To see this in action, check out the `recipes module` in the `recipes` project folder.
+
+What if you want to use route protection (`canActivate`  to be precise) on lazily loaded routes?
+
+You can add `canActivate` to the lazy loaded routes but that of course means, that you might load code which in the end can't get accessed anyways. It would be better to check that BEFORE loading the code.
+
+You can enforce this behavior by adding the `canLoad` guard to the route which points to the lazily loaded module:
+
+```javascript
+{ path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule', canLoad: [AuthGuard] }
+```
+
+In this example, the `AuthGuard` should implement the `CanLoad` interface.
+
+
+> NOTE: If you lazily load a module & provide a service within that module, Angular by default will instantiate another instance of the service. Also, you should never provide a service in a shared module, especially if you plan to use them in lazy-loaded modules, because it will also create a child injector & new instance of the service.
+
+Stated another way, "basically if we want to share a service accross the application all we need to do is to provide it in the AppModule hence there is no need to provide it in the Shared Module, or we want to share the service accross a feature module then provide it at the module itself wheter is lazy loaded or eagerly loaded."
+
+For restructuring reasons, it's best to put things that are app-wide, like a header component or a directive used only in the app component, into the `CoreModule`.
+
+> NOTE: Guards are the only services you should provide in a `name-routing.module` file.
+
+### Ahead-of-Time Compilation
+
+Note that Angular compiles your templates into javascript (mainly for performance reasons, but there are other benefits). Don't confuse this w/the Ts files being compile to Js - that is done by the CLI. The default is just-in-time compilation:
+
+`Development > Production > App loads in Browser > Ng Parses & Compiles Templates to Js`
+
+In ahead-of-time compilation:
+
+`Development > Ng Parses & Compiles Templates to Js > Production > App Loads in Browser`
+
+There are some advantages of AoT Compilation:
+
+1. Faster App Startup (compilation doesn't happen in browser)
+2. Templates get checked during development (for errors)
+3. Smaller File Size - unused features can be stripped out (Ng knows what you do & don't use) & the compiler itself isn't shipped.
+
+To accomplish this w/the CLI:
+
+`ng build --prod --aot`
+
+### Preloading lazy-loaded routes
+
+Essentially, preloading a lazy-loaded route is just prioritizing & timing when other application code gets loaded. The app would not load code from lazy-loading routes until the main app code was loaded & ready. In the background, when the user is clicking around & using the app, the code would be downloaded & available so latency isn't an issue when selecting your lazy-load routes.
+
+To implement, in `app-routing.module.ts`:
+
+```javascript
+@NgModule({
+  imports: [
+    // preload all lazy-loaded modules after the app has been loaded using preloadingStrategy
+    RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
+  ],
+  exports: [ RouterModule ] // exports the configured router
+})
+```
+
+## Deployment
+
 

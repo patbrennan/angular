@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
 
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { HomeComponent } from './core/home/home.component';
 
-import { AppComponent } from './app.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { SigninComponent } from './auth/signin/signin.component';
 // import { AuthGuard } from './auth/auth-guard.service';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/recipes', pathMatch: 'full' },
-  { path: 'signup', component: SignupComponent },
-  { path: 'signin', component: SigninComponent },
+  { path: '', component: HomeComponent},
+  // lazy loading on visit = loadChildren: path/to/file#ModuleClassName
+  { path: 'recipes', loadChildren: './recipes/recipe.module#RecipesModule'},
+  // { path: '', redirectTo: '/recipes', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(appRoutes) ],
+  imports: [
+    // preload all lazy-loaded modules after the app has been loaded using preloadingStrategy
+    RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
+  ],
   exports: [ RouterModule ] // exports the configured router
 })
 export class AppRoutingModule {}

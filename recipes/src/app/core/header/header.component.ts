@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Response } from "@angular/http";
+import { Response } from '@angular/http';
 
-import { DataStorageService } from "../shared/data-storage.service";
-import { AuthService } from '../auth/auth.service';
+import { DataStorageService } from '../../shared/data-storage.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +10,13 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
+
   constructor(private dataService: DataStorageService,
               private authService: AuthService) { }
 
   ngOnInit() {
   }
-  
+
   saveData() {
     this.dataService.storeRecipes( ).subscribe(
       (response: Response)  => {
@@ -24,15 +24,18 @@ export class HeaderComponent implements OnInit {
       }
     );
   }
-  
+
   getData() {
     // don't need to subscribe - did it in data-storage service to immediately
     // react to completion of request.
-    this.dataService.getRecipes( ); 
+    this.dataService.getRecipes( );
   }
-  
+
   onLogout() {
     this.authService.logout();
   }
 
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
 }
