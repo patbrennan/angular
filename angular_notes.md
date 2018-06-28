@@ -834,4 +834,49 @@ To implement, in `app-routing.module.ts`:
 
 ## Deployment
 
+1. Build your App for production (`ng build --prod --aot`) - consider AoT Compilation. The new `dist` folder will be created from here.
+2. Set correct <base> element: for example.com/my-app you should have `<base href="/my-app/">`
+3. Make sure server ALWAYS returns `index.html`: Routes are registered in Angular app, so server *will not know your routes*. Return `index.html` in case of 404 errors. This will allow Ng to render the 404 because the index.html file will send the Ng app.
+
+## New HTTP Client - An Alternative
+
+**Interceptors**: These allow us to do something upon every request / response cycle. A good use case is to set the URL & auth token on every request so it doesn't have to be done manually. See `auth.interceptor.ts` for examples inside the `new-http-client` folder.
+
+**Excluding an interceptor**: Currently Angular doesn't support this, but a good workaround from SO:
+
+```javascript
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpBackend } from '@angular/common/http';
+
+@Injectable()
+export class HttpBackendClient extends HttpClient {
+    constructor(handler: HttpBackend) {
+        super(handler);
+    }
+}
+```
+
+And then added it to my module:
+
+```javascript
+@NgModule({
+    providers: [
+        HttpBackendClient,
+        AuthService
+    ],
+    imports: [HttpClientModule]
+})
+export class ServicesModule {}
+```
+
+And use it like this:
+
+```javascript
+@Injectable()
+export class AuthService {
+
+    constructor(private http: HttpBackendClient) {
+    }
+}
+```
 
