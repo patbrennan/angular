@@ -538,7 +538,7 @@ For syntax details on dealing w/when this doesn't work & supporting very old bro
 
 ## Observables
 
-Definition: Essentially a data source (user input) events, https requests, triggered in code...it's a generalized mechanism for push-based notifications, also known as "observer design pattern". The observable object sends notifications (provider). The observer is the class that receives them.
+Definition: Essentially a data source (user input) events, https requests, triggered in code...it's a generalized mechanism for push-based notifications, also known as "observer design pattern". The observable object sends notifications (provider). The observer is the class that receives them. Good video [here](https://www.youtube.com/playlist?list=PL55RiY5tL51pHpagYcrN9ubNLVXF8rGVi).
 
 The observer can react to different data package "hooks":
 - Handle Data
@@ -879,4 +879,42 @@ export class AuthService {
     }
 }
 ```
+
+## NgRx Basics
+
+NgRx is a redux-like patter to manage application state. Normally we were managing this using services & subjects, etc. However, now we're using a different, perhaps more elaborate approach with NgRx, which isn't part of the Angular core code.
+
+> BEFORE MOVING FORWARD: Good idea to watch [these videos](https://www.youtube.com/playlist?list=PL55RiY5tL51pHpagYcrN9ubNLVXF8rGVi)
+
+### Notes on RxJs:
+
+
+
+## Angular Universal
+
+This allows rendering of html on the server instead of the browser/device. This is useful when:
+
+1. We want our app to be SEO-able (crawlable)
+2. We want a static page to load quickly
+3. We want better performance on compute-limited devices
+
+---
+
+For notes on how to implement this, google "angular universal cli" & see the [wiki page](https://github.com/angular/angular-cli/wiki/stories-universal-rendering)
+
+- Once all steps are complete, run `ng run your-project-name:command`, (like `ng run recipes:server`). The `your-project-name` matches the one in the `angular.json` file.
+- Once that is complete you need to add a node server that is capable of running & compiling the app. See docs for code, but you also must install express with `npm intsall --save express`.
+- You must also run the normal `ng build --prod` to get all the files + AoT + lazy-loading, etc & builds it into the proper folders per the `angular.json` file.
+- Create the rest of the necessary files & follow the rest of the instructions.
+- Copy `"webpack:server": "webpack --config webpack.server.config.js --progress --colors"` into your `package.json` file under scripts for ease of running it in the future.
+- Run `npm run webpack:server` - enter "yes" when it asks if you'd like to install the webpack-cli (only on the first time).
+- This creates the `server.js` file inside the `/dist` folder.
+- Run `node dist/server.js`.
+  - If you're getting a `StaticInjetionError`, go to the `webpack.server.config.js` file & under target, add: `mode: 'none'`, then re-run `npm run webpack:server`.
+
+You would then need to deploy this application to a server capable of running a node.js server.
+
+Server-side rendering (SSR) can make sense because of SEO considerations (crawler should see what your users see) or because you want to deliver a finished page to your users (rather than creating the page in the browser).
+
+But that also has one important implication: **You MUST NOT use any browser-only APIs like `document.querySelector()` in your Angular code!**
 
