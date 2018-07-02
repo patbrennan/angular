@@ -918,3 +918,35 @@ Server-side rendering (SSR) can make sense because of SEO considerations (crawle
 
 But that also has one important implication: **You MUST NOT use any browser-only APIs like `document.querySelector()` in your Angular code!**
 
+## Animations
+
+Angular 4+ animations:
+
+With the release of Angular 4, the general syntax of Angular Animations didn't change. 
+
+However, the animation functions were moved into their own package and you now also need to add a special module to your `imports[]` array in the `AppModule`.
+
+Specifically, the following adjustments are required:
+
+- You probably need to install the new animations package (running the command never hurts): `npm install --save @angular/animations`
+- Add the `BrowserAnimationsModule` to your `imports[]` array in `AppModule`
+- This Module needs to be imported from `'@angular/platform-browser/animations'`  => `import { BrowserAnimationsModule } from '@angular/platform-browser/animations'`  (in the AppModule!)
+- You then import trigger , state , style  etc from `@angular/animations` instead of `@angular/core`
+
+Importing your own animations to keep your code more readable / dry:
+
+Like this:
+
+```javascript
+// animation.ts
+import { trigger, state, style, transition, animate } from '@angular/core';
+ 
+export const fade = trigger('fade', [
+    state(...),
+    state(...),
+    transition(...),
+    ...
+]);
+```
+
+This allows you to import this animation-storage file in any place you want to use it. Or even better: It allows you to import EXACTLY the animation you need and not the complete class like in the static-class approach.
