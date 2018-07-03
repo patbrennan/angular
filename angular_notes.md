@@ -950,3 +950,30 @@ export const fade = trigger('fade', [
 ```
 
 This allows you to import this animation-storage file in any place you want to use it. Or even better: It allows you to import EXACTLY the animation you need and not the complete class like in the static-class approach.
+
+
+## Offline Capability / Service Workers
+
+**Service Worker** = A program that runs on a different thread than the main Js code. It's decoupled from the app & can continue running in the background. In our app, we want it to listen to outgoing network requests. 
+
+What we want to do is catch these requests & do something with them, like cache the responses so they can be available offline.
+
+- Running `ng add @angular/pwa` will configure Ng to add a preconfigured service worker. This will act as a proxy for our http requests.
+- When ready to compile & build your app, run `ng build --prod`
+- To see it in action in your practice app, install light-weight node server with `npm install -g http-server` (will host content of folder you run this in), then run `http-server`. Make sure to navigate into the `dist/angular-pwa/` folder.
+- `http-server -p 8081` for example (specifying port)
+
+To change the behavior of the service worker & chaching, edit the `ngsw-config.json` file. See [official documentation](https://angular.io/guide/service-worker-intro) on this. It is fairly flexible & there are lots of options.
+
+## Unit Testing
+
+Why?
+
+1. Guard against breaking changes
+2. Analyze code behavior (expected & unexpected)
+3. Reveal design mistakes
+
+See [official testing documentation](https://angular.io/docs/ts/latest/guide/testing.html) for more details.
+
+## Custom Project / Workflow Setup
+

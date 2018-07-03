@@ -73,7 +73,7 @@ import { trigger, state, style, transition, animate, keyframes, group } from '@a
         }))
       ])
     ]),
-    
+
     // using keyframes
     trigger('list2', [
       state('in', style({
