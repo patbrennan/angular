@@ -7,5 +7,4 @@ describe('Pipe: ReversePipe', () => {
     let reversePipe = new ReversePipe();
     expect(reversePipe.transform('hello')).toEqual('olleh');
   });
-
 });

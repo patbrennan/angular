@@ -886,8 +886,15 @@ NgRx is a redux-like patter to manage application state. Normally we were managi
 
 > BEFORE MOVING FORWARD: Good idea to watch [these videos](https://www.youtube.com/playlist?list=PL55RiY5tL51pHpagYcrN9ubNLVXF8rGVi)
 
-### Notes on RxJs:
+**What is Application State?**: State is what the user sees / did & keeps track of the status of the application, like login status, etc. 
 
+Using a service to manage application state & update the UI, and using a Subject within that service to enforce/inform the rest of the app about changes, is a very good practice for smaller applications, or even medium sized ones without growing levels of complexity.
+
+As the app grows, that approach might get hard to maintain, and you might want to use the **Redux Pattern**: there is one central store where you manage your application state ("Store"). Services & Components can still communicate between each other, but they receive state from the Store.
+
+To change state, we *dispatch Actions*. These are clearly defined (i.e., save post). Then that would reach/trigger a *reducer* (functions we write that take an action & potential payload). Reducers override the state & save it. That saves to State (immutably).
+
+`npm install --save @ngrx/store` => imports main package
 
 
 ## Angular Universal
@@ -976,4 +983,6 @@ Why?
 See [official testing documentation](https://angular.io/docs/ts/latest/guide/testing.html) for more details.
 
 ## Custom Project / Workflow Setup
+
+> Refer to this section for creating a custom project from scratch, not using the Angular CLI.
 
