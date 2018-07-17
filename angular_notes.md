@@ -896,6 +896,27 @@ To change state, we *dispatch Actions*. These are clearly defined (i.e., save po
 
 `npm install --save @ngrx/store` => imports main package
 
+**NOTE**: Async functions cannot be used in reducers.
+
+ngrx can also handle asynchronous tasks that produce side-effects (something that is related to dispatching actions but doesn't alter state directly). I.E., creating a user w/email/password when a register button is clicked. 
+
+To use the functionality, install the new package w/ `npm install --save @ngrx/effects`. This can get very complex to use. See code examples & documentation for more details.
+
+**How to handle Login Failed?**
+
+You would add a `catch()` block to the auth signin side effect. In there, dispatch a new action (e.g. `AUTH_FAILED`) and handle that in the reducer to set some state property (e.g. set an `authError` to the error message returned by Firebase). You can then use this new state property just like any other state in your templates to output an error message for example.
+
+**Other ngrx packages:**
+
+### Router Store Package:
+
+Install `npm install --save @ngrx/router-store`. To see that it works & get some other useful tools, you could also use **Store Devtools** using `npm install --save @ngrx/store-devtools`.
+
+See `ngrx` folder for all necessary setup / imports.
+
+### Lazy Load & Dynamic Injection
+
+???
 
 ## Angular Universal
 
