@@ -1007,3 +1007,7 @@ See [official testing documentation](https://angular.io/docs/ts/latest/guide/tes
 
 > Refer to this section for creating a custom project from scratch, not using the Angular CLI.
 
+## Adding 3rd Party Libraries to Angular App
+
+This is an **important** topic. Read [this article](https://academind.com/learn/angular/angular-q-a/#integrate-third-party-libraries) for details on how to implement this.
+
